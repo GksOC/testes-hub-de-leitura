@@ -1,0 +1,24 @@
+{
+  "name": "testes-hub-de-leitura",
+  "version": "1.0.0",
+  "description": "Repositório de testes do Cypress",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GksOC/testes-hub-de-leitura.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/GksOC/testes-hub-de-leitura/issues"
+  },
+  "homepage": "https://github.com/GksOC/testes-hub-de-leitura#readme",
+  "dependencies": {
+    "cypress": "^15.18.1"
+  }
+}
