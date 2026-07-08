@@ -2,8 +2,11 @@
 
 Repositório de testes do Cypress
 
-não esquecer dos comandos:
+Não esquecer dos comandos:
 `npm init -y`
+
 `npm install cypress`
+
 `npx cypress open`
+
 
