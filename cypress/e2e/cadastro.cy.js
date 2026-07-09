@@ -1,4 +1,5 @@
 /// <reference types="cypress" />
+
 import { faker } from '@faker-js/faker';
 
 describe('Cadastro no Hub de Leitura', () => { 
@@ -8,7 +9,7 @@ describe('Cadastro no Hub de Leitura', () => {
     });
 
     //teste 1
-    it('Deve fazer cadastro com sucesso', () => {
+    it.skip('Deve fazer cadastro com sucesso', () => {
         let email = `teste${Date.now()}@email.com`;
 
         cy.get('#name').type('Guilherme Cantarino');
@@ -24,7 +25,7 @@ describe('Cadastro no Hub de Leitura', () => {
     });
 
     //teste 2
-    it.only('Deve fazer cadastro com sucesso, usando Faker', () => {
+    it('Deve fazer cadastro com sucesso, usando Faker', () => {
         let  nome = faker.person.fullName();
         let email = `teste${Date.now()}@email.com`;
         let phone = faker.phone.number('319########');
@@ -39,5 +40,17 @@ describe('Cadastro no Hub de Leitura', () => {
         cy.get('#register-btn').click();
         //resultado
         cy.url().should('include', '/dashboard.html');
+    });
+
+    //teste 3
+    it('Deve preencher cadastro com sucesso (comando custom)', () => {
+        let password = faker.internet.password();
+        cy.preencherCadastro(
+            faker.person.fullName(),
+            faker.internet.email(),
+            faker.phone.number(),
+            password,
+            password,
+        );
     });
 }); 

@@ -1,3 +1,5 @@
+/// <reference types="cypress" />
+
 describe('template spec', () => {
 
   //primeira ação antes de cada teste
