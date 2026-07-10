@@ -1,3 +1,7 @@
+/// <reference types="cypress" />
+import { faker } from '@faker-js/faker';
+import CadastroPage from "../support/pages/cadastro-page.js";
+
 describe('Testes End To End do fluxo de cadastro e login', () => {
 
     /* 
@@ -15,14 +19,40 @@ describe('Testes End To End do fluxo de cadastro e login', () => {
     6. Submeter o formulário de login e verificar se o login foi bem-sucedido.
 
     Use as boas práticas aprendidas até agora para estruturar o teste.
-    */
+    */    
 
     beforeEach(() => {
-        // Configurações iniciais, se necessário
+        CadastroPage.visitarPaginaCadastro();
     });
 
 
     it('Deve fazer o cadastro e validar o login com o usuário cadastrado', () => {
         // Criar todo o fluxo aqui dentro deste único "it"
+
+        //Preenchendo formulário de cadastro. Aqui foi utilizado o faker para sempre criar um novo usuário
+        let usuario = {
+            nome: faker.person.fullName(),
+            email: faker.internet.email(),
+            telefone: faker.phone.number(),
+            senha: faker.internet.password()
+        }
+
+        CadastroPage.preencherCadastro(
+            usuario.nome,
+            usuario.email,
+            usuario.telefone,
+            usuario.senha,
+            usuario.senha,
+        );
+        
+        //verificando se o cadastro foi concluído com sucesso
+        cy.url().should('include', '/dashboard.html');
+
+        //pressionando botão de logout para voltar na tela de login
+        cy.get('.user-actions > .btn-outline-danger').click();
+
+        //fazendo login
+        cy.login(usuario.email, usuario.senha);
+        //a função já realiza a verificação do login
     });
 });
