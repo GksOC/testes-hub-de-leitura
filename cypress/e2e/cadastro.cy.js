@@ -1,11 +1,11 @@
 /// <reference types="cypress" />
-
 import { faker } from '@faker-js/faker';
+import CadastroPage from "../support/pages/cadastro-page.js";
 
 describe('Cadastro no Hub de Leitura', () => { 
 
     beforeEach(() => {
-        cy.visit('/register.html');
+        CadastroPage.visitarPaginaCadastro();
     });
 
     //teste 1
@@ -53,4 +53,18 @@ describe('Cadastro no Hub de Leitura', () => {
             password,
         );
     });
+
+    //teste 4
+    //É muito parecido com o anterior, mas está bem mais separado do que usando o "commands.js" que é mais "global"
+    it('Deve preencher cadastro com sucesso (usando Page Objects)', () => {
+        let password = faker.internet.password();
+        CadastroPage.preencherCadastro(
+            faker.person.fullName(),
+            faker.internet.email(),
+            faker.phone.number(),
+            password,
+            password,
+        );
+    });
+
 }); 
