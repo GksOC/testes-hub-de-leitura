@@ -8,21 +8,25 @@ describe('Cadastro no Hub de Leitura', () => {
         CadastroPage.visitarPaginaCadastro();
     });
 
-    //teste 1
-    it.skip('Deve fazer cadastro com sucesso', () => {
-        let email = `teste${Date.now()}@email.com`;
-
-        cy.get('#name').type('Guilherme Cantarino');
-        cy.get('#email').type(email);
-        cy.get('#phone').type('31999999999');
-        cy.get('#password').type('Senha123');
-        cy.get('#confirm-password').type('Senha123');
-        cy.get('#terms-agreement').check();
-        cy.get('#register-btn').click();
-
-        //resultado
-        cy.url().should('include', '/dashboard.html');
+    afterEach(() => {
+        cy.screenshot();
     });
+
+    //teste 1
+    // it('cadastro obsoleto', () => {
+    //     let email = `teste${Date.now()}@email.com`;
+
+    //     cy.get('#name').type('Guilherme Cantarino');
+    //     cy.get('#email').type(email);
+    //     cy.get('#phone').type('31999999999');
+    //     cy.get('#password').type('Senha123');
+    //     cy.get('#confirm-password').type('Senha123');
+    //     cy.get('#terms-agreement').check();
+    //     cy.get('#register-btn').click();
+
+    //     //resultado
+    //     cy.url().should('include', '/dashboard.html');
+    // });
 
     //teste 2
     it('Deve fazer cadastro com sucesso, usando Faker', () => {

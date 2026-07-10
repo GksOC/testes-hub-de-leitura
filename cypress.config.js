@@ -9,5 +9,10 @@ module.exports = defineConfig({
     },
     //configurar o site base para não precisar colocar o endereço completo do site em cada teste.
     baseUrl: "http://localhost:3000",
+    
+    //configurando o Cypress Cloud
+    projectId: "4ffoce",
+    video: false
   },
+
 });
