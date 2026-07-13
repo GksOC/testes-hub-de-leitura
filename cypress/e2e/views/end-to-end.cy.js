@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 import { faker } from '@faker-js/faker';
-import CadastroPage from "../support/pages/cadastro-page.js";
+import CadastroPage from "../../support/pages/cadastro-page.js";
 
 describe('Testes End To End do fluxo de cadastro e login', () => {
 

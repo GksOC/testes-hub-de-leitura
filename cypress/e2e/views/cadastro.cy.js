@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 import { faker } from '@faker-js/faker';
-import CadastroPage from "../support/pages/cadastro-page.js";
+import CadastroPage from "../../support/pages/cadastro-page.js";
 
 describe('Cadastro no Hub de Leitura', () => { 
 

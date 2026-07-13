@@ -1,5 +1,5 @@
 /// <reference types="cypress"/>
-import user from "../fixtures/usuario.json";
+import user from "../../fixtures/usuario.json";
 
 describe('Login no hub', () => {
 
