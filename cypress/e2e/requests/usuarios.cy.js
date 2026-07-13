@@ -182,5 +182,5 @@ describe('DELETE - Teste de API - Gestão de Usuários', () => {
                 expect(response.body.message).to.eq("Usuário removido com sucesso.");
             });
         });
-    })
+    });
 });
