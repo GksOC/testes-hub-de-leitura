@@ -63,3 +63,18 @@ Cypress.Commands.add('login', (usuario, senha) => {
       return response.body.token
    });
  });
+
+Cypress.Commands.add('criarUsuario', (nome, email, senha) => {
+   cy.api({
+      method: 'POST',
+      url: '/api/users',
+      body: {
+         "name": nome,
+         "email": email,
+         "password": senha
+      }
+   }).then(response => {
+      expect(response.status).to.eq(201);
+      return response.body.user.id
+   })
+});

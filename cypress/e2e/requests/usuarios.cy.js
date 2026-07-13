@@ -52,7 +52,7 @@ describe('GET - Teste de API - Gestão de Usuários', () => {
     it('Deve listar um usuário com sucesso buscando por ID', () => {
         cy.api({
             method: 'GET',
-            url: '/api/users/2',
+            url: '/api/users/68',
             headers: { 'Authorization': token }
         }).should(response => {
             expect(response.status).to.equal(200);
@@ -115,4 +115,72 @@ describe('POST - Teste de API - GEstão de Usuários', () => {
         });
     });
 
+});
+
+describe('PUT - Teste de API - Gestão de Usuários', () => {
+    it.skip('Deve atualizar um usuário específico com sucesso', () => {
+        let id = 68;
+        cy.api({
+            method: 'PUT',
+            url: `/api/users/${id}`,
+            body: {
+                "name": "Willian H.A. Irons",
+                "email": "GksOC@Family.Irons",
+                "password": "novaSenha@123"
+            },
+            headers: { 'Authorization': token }
+        }).should(response => {
+            expect(response.status).to.eq(200);
+            expect(response.body.message).to.eq("Usuário atualizado com sucesso.");
+        });
+    });
+
+    //este aqui é um teste que garante que a requisição funcione indepentemente da entrada de um ID
+    it('Deve atulizar um usuário com sucesso - de forma independente', () => {
+        let email = faker.internet.email()
+        cy.criarUsuario(faker.person.firstName(), email, faker.internet.password()).then(userId => {
+            cy.api({
+                method: 'PUT',
+                url: `/api/users/${userId}`,
+                body: {
+                    "name": faker.person.fullName(),
+                    "email": email,
+                    "password": faker.internet.password()
+                },
+                headers: { 'Authorization': token }
+            }).should(response => {
+                expect(response.status).to.eq(200);
+                expect(response.body.message).to.eq("Usuário atualizado com sucesso.");
+            });
+        });
+    });
+});
+
+describe('DELETE - Teste de API - Gestão de Usuários', () => {
+
+    it.skip('Deve excluir um usuário específico com sucesso', () => {
+        let id = 91;
+        cy.api({
+            method: 'DELETE',
+            url: `/api/users/${id}`,
+            headers: { 'Authorization': token }
+        }).should(response => {
+            expect(response.status).to.eq(200);
+            expect(response.body.message).to.eq('usuário removido com sucesso.');
+        });
+    });
+
+    it('Deve excluir um usuário com sucesso - de forma independente', () => {
+        let email = faker.internet.email()
+        cy.criarUsuario(faker.person.firstName(), email, faker.internet.password()).then(userId => {
+            cy.api({
+                method: 'DELETE',
+                url: `/api/users/${userId}`,
+                headers: { 'Authorization': token }
+            }).should(response => {
+                expect(response.status).to.eq(200);
+                expect(response.body.message).to.eq("Usuário removido com sucesso.");
+            });
+        });
+    })
 });
