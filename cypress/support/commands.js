@@ -24,6 +24,7 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
+//Pages
 Cypress.Commands.add('login', (usuario, senha) => { 
     //para ocultar as informações durante a depuração do cypress, utilize o Pass {log: false}
     cy.get('#email').type(usuario, {log: false});
@@ -45,4 +46,20 @@ Cypress.Commands.add('login', (usuario, senha) => {
 
     //resultado
     cy.url().should('include', '/dashboard.html');
+ });
+
+
+ //API
+ Cypress.Commands.add('geraToken', (email, senha) => {
+   cy.request({
+      method: 'POST',
+      url: '/api/login',
+      body: {
+         "email": email,
+         "password": senha
+      }
+   }).then((response) => {
+      expect(response.status).to.equal(200);
+      return response.body.token
+   });
  });

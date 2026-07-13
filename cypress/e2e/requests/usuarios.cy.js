@@ -1,9 +1,29 @@
 /// <reference types="cypress"/>
 import { faker } from "@faker-js/faker";
 
+let token = "";
+
+beforeEach(() => {
+    cy.geraToken( "admin@biblioteca.com", "admin123").then(tkn => {
+        token = tkn;
+    });
+});
+
+
 describe('GET - Teste de API - Gestão de Usuários', () => {
 
-    let token = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJhZG1pbkBiaWJsaW90ZWNhLmNvbSIsImlzQWRtaW4iOnRydWUsImlhdCI6MTc4Mzk2MzAwOSwiZXhwIjoxNzgzOTkxODA5fQ.9Cynq1LAYVKvJ8f6-WHQEhByz_jmxALQEYkPTmZ8SYg";
+    // it.only('Teste de token', () => {
+    //     cy.geraToken( "admin@biblioteca.com", "admin123").then(tkn => {
+    //         cy.api({
+    //             method: 'GET',
+    //             url: '/api/users',
+    //             headers: { 'Authorization': tkn }
+    //         }).should(response => {
+    //             expect(response.status).to.eq(200);
+    //             expect(response.body.users).to.be.an('array');
+    //         });
+    //     });
+    // });
     
     it('Deve listar usuários com sucesso', () => {
         cy.api({
@@ -54,9 +74,9 @@ describe('GET - Teste de API - Gestão de Usuários', () => {
             }
         }).should(response => {
             expect(response.status).to.equal(200);
-            expect(response.body).to.have.property('id');
-            expect(response.body).to.have.property('name');
-            expect(response.body).to.have.property('email');
+            expect(response.body.users[0]).to.have.property('id');
+            expect(response.body.users[0]).to.have.property('name');
+            expect(response.body.users[0]).to.have.property('email');
         });
     });
 
