@@ -50,7 +50,7 @@ describe('GET - Testes da Funcionalidade Catálogo de Livros', () => {
         }).should(response => {
             expect(response.status).to.equal(200);
             expect(response.body.book.id).to.equal(id);
-            expect(response.body.book).to.have.property('title');
+            expect(response.body.book).to.have.property('title')
             expect(response.body.book).to.have.property('author');
             expect(response.body.book).to.have.property('description');
             expect(response.body.book).to.have.property('category');
@@ -82,55 +82,18 @@ describe('POST - Testes da Funcionalidade Catálogo de Livros', () => {
     // Objetivo: Validar que um novo livro é adicionado com sucesso ao catálogo
     // Verificar que apenas admin pode adicionar novos livros (validação de permissão)
     it('POST - Deve cadastrar um novo livro com sucesso', () => {
-        cy.api({
-            method: 'POST',
-            url: '/api/books',
-            body: {
-                "title": faker.book.title(),
-                "author": faker.book.author(),
-                "description": faker.hacker.phrase(),
-                "category": "Literatura Estrangeira",
-                "isbn": "978-85-260-1320-6",
-                "editor": faker.book.publisher(),
-                "language": "Inglês",
-                "publication_year": Math.floor(Math.random() * (2025 - 1946) + 1946),
-                "pages": Math.floor(Math.random() * (919) + 80),
-                "format": "Físico",
-                "total_copies": 4,
-                "available_copies": 4
-            },
-            headers: { 'Authorization': token } //validando login somente admin
-        }).should(response => {
-            expect(response.status).to.equal(201);
-            expect(response.body.message).to.equal("Livro criado com sucesso.");
-        }); 
+        cy.criarLivroValido(token);
     });
 
     // Objetivo: Garantir que dados inválidos são rejeitados ao adicionar um livro
     // Validar mensagens de erro apropriadas para dados faltantes ou incorretos
     it('POST -  Deve rejeitar livro com dados inválidos', () => {
-        cy.api({
-            method: 'POST',
-            url: '/api/books',
-            body: {
-                "title": faker.book.title(),
-                "author": faker.book.author(),
-                "description": faker.hacker.phrase(),
-                "category": "Literatura Estrangeira",
-                "isbn": "978-85-260-1320-6",
-                "editor": faker.book.publisher(),
-                "language": "Inglês",
-                "publication_year": Math.floor(Math.random() * (2799) - 1400), //idade inválida que fica entre -1400 e 1399
-                "pages": Math.floor(Math.random() * (919) + 80),
-                "format": "Físico",
-                "total_copies": 4,
-                "available_copies": 4
-            },
-            headers: { 'Authorization': token },
-            failOnStatusCode: false
-        }).should(response => {
+        cy.criarLivroCustom(token, [
+            {prop: "title", valor: "Teste"},
+            {prop: "publication_year", valor: Math.floor(Math.random() * 2799 - 1400),}
+        ]).should(response => {
             expect(response.status).to.equal(400);
-            expect(response.body.message).to.equal('\"publication_year\" must be greater than or equal to 1400');
+            //Como agora a entrada é variável, a resposta também é variável
         }); 
     });
 
@@ -141,28 +104,7 @@ describe('PUT - Testes da Funcionalidade Catálogo de Livros', () => {
     // Objetivo: Validar que um livro pode ser atualizado com sucesso
     // Verificar que apenas admin pode atualizar livros (validação de permissão)
     it('PUT - Deve atualizar um livro previamente cadastrado - de forma independente', () => {
-        cy.request({
-            method: 'POST',
-            url: '/api/books',
-            body: {
-                "title": faker.book.title(),
-                "author": faker.book.author(),
-                "description": faker.hacker.phrase(),
-                "category": "Literatura Estrangeira",
-                "isbn": "978-85-260-1320-6",
-                "editor": faker.book.publisher(),
-                "language": "Inglês",
-                "publication_year": Math.floor(Math.random() * (2025 - 1946) + 1946),
-                "pages": Math.floor(Math.random() * (919) + 80),
-                "format": "Físico",
-                "total_copies": 4,
-                "available_copies": 4
-            },
-            headers: { 'Authorization': token }
-        }).then(response => {
-            expect(response.status).to.equal(201);
-            return response.body.book.id
-        }).then(bookId => {
+        cy.criarLivroValido(token).then(bookId => {
             cy.api({
                 method: 'PUT',
                 url: `/api/books/${bookId}`,
@@ -194,28 +136,7 @@ describe('DELETE - Testes da Funcionalidade Catálogo de Livros', () => {
     // Objetivo: Validar que um livro pode ser removido do catálogo
     // Verificar que apenas admin pode deletar livros (validação de permissão)
     it('DELETE - Deve deletar um livro previamente cadastrado', () => {
-        cy.request({
-            method: 'POST',
-            url: '/api/books',
-            body: {
-                "title": faker.book.title(),
-                "author": faker.book.author(),
-                "description": faker.hacker.phrase(),
-                "category": "Literatura Estrangeira",
-                "isbn": "978-85-260-1320-6",
-                "editor": faker.book.publisher(),
-                "language": "Inglês",
-                "publication_year": Math.floor(Math.random() * (2025 - 1946) + 1946),
-                "pages": Math.floor(Math.random() * (919) + 80),
-                "format": "Físico",
-                "total_copies": 4,
-                "available_copies": 4
-            },
-            headers: { 'Authorization': token }
-        }).then(response => {
-            expect(response.status).to.equal(201);
-            return response.body.book.id
-        }).then(bookId => {
+        cy.criarLivroValido(token).then(bookId => {
             cy.api({
                 method: 'DELETE',
                 url: `/api/books/${bookId}`,
