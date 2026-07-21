@@ -5,14 +5,14 @@ module.exports = defineConfig({
 
   e2e: {
     setupNodeEvents(on, config) {
-      // implement node event listeners here
+      // Pega o BASE_URL que está no cypress.env.json e atribui ao baseUrl do Cypress
+      if (config.env.BASE_URL) {
+        config.baseUrl = config.env.BASE_URL;
+      }
+
+      return config;
     },
-    //configurar o site base para não precisar colocar o endereço completo do site em cada teste.
-    baseUrl: "http://localhost:3000",
-    
-    //configurando o Cypress Cloud
     projectId: "4ffoce",
     video: false
-  },
-
+  }
 });

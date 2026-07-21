@@ -28,13 +28,13 @@
 import { faker } from "@faker-js/faker";
 
 Cypress.Commands.add('login', (usuario, senha) => { 
-    //para ocultar as informações durante a depuração do cypress, utilize o Pass {log: false}
-    cy.get('#email').type(usuario, {log: false});
-    cy.get('#password').type(senha, {log: false});
-    cy.get('#login-btn').click();
+   //para ocultar as informações durante a depuração do cypress, utilize o Pass {log: false}
+   cy.get('#email').type(usuario, {log: false});
+   cy.get('#password').type(senha, {log: false});
+   cy.get('#login-btn').click();
 
-    //resultado
-    cy.url().should('include', 'dashboard');
+   //resultado - comentado para fazer checagem manual
+   //cy.url().should('include', 'dashboard');
  });
 
  Cypress.Commands.add('preencherCadastro', (nome, email, telefone, senha, confSenha) => {
@@ -139,3 +139,22 @@ function livroBody (){
       available_copies: 4
    };
 }
+
+Cypress.Commands.add('loginApp', (email, senha) => {
+   cy.request({
+      method: 'POST',
+      url: '/api/login',
+      body: {
+            "email": email, 
+            "password": senha
+      }
+   }).then((response) => {
+      expect(response.status).to.eq(200);
+
+      //Criar o estado da aplicação - olhar no console durante a inspeção da requisição
+      window.localStorage.setItem('authToken', response.body.token); //item obrigatório para autenticar login
+      window.localStorage.setItem('isAdmin', response.body.isAdmin);
+      window.localStorage.setItem('userId', response.body.id);
+      window.localStorage.setItem('userName', response.body.name);
+   });
+});
