@@ -150,11 +150,13 @@ Cypress.Commands.add('loginApp', (email, senha) => {
       }
    }).then((response) => {
       expect(response.status).to.eq(200);
-
-      //Criar o estado da aplicação - olhar no console durante a inspeção da requisição
-      window.localStorage.setItem('authToken', response.body.token); //item obrigatório para autenticar login
-      window.localStorage.setItem('isAdmin', response.body.isAdmin);
-      window.localStorage.setItem('userId', response.body.id);
-      window.localStorage.setItem('userName', response.body.name);
+      
+      cy.clearLocalStorage();
+      cy.window().then((win) => {
+         win.localStorage.setItem('authToken', response.body.token);
+         win.localStorage.setItem('isAdmin', response.body.isAdmin);
+         win.localStorage.setItem('userId', response.body.id);
+         win.localStorage.setItem('userName', response.body.name);
+      });
    });
 });
